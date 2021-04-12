@@ -1,41 +1,128 @@
 package ee.bcs.valiit.tasks;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Lesson4 {
-    // Store account nr as a key and account balance as value
-    // HashMap<String, Account> accountBalanceMap = new HashMap<>();
+
+    static Map<String, Double> accountBalanceMap = new HashMap<>();
 
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
-        while (true){
-            String line = scanner.nextLine();
-            if (line.equalsIgnoreCase("exit")){
+        while (true) {
+            System.out.println(
+                    "1. Create Account\n" +
+                            "2. Get Account Balance\n" +
+                            "3. Deposit Money\n" +
+                            "4. Withdraw Money\n" +
+                            "5. Transfer Money\n" +
+                            "6. Exit\n");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            if (choice == 1) {
+                System.out.println("Crate new account. Insert new account number.");
+                String accountNr = scanner.nextLine();
+                System.out.println("New account Nr: " + accountNr + ". Current account balance is EUR " + accountBalanceMap.put(accountNr, 0.0));
+
+            } else if (choice == 2) {
+                System.out.println("Insert account number:");
+                String accountNr = scanner.nextLine();
+                Double balance = accountBalanceMap.get(accountNr);
+                if (accountBalanceMap.get(accountNr) == null) {
+                    System.out.println("No account available. Create new account!");
+                } else {
+                    System.out.println("Your account balance is EUR: " + balance);
+                }
+
+
+            } else if (choice == 3) {
+                System.out.println("Insert account number:");
+                String accountNr = scanner.nextLine();
+                Double balance = accountBalanceMap.get(accountNr);
+                System.out.println("Account Nr: " + accountNr + " balance is EUR " + balance);
+                System.out.println("Insert deposit amount:");
+                Double deposit = scanner.nextDouble();
+                scanner.nextLine();
+                if (accountBalanceMap.get(accountNr) == null) {
+                    System.out.println("No account available. Create new account!");
+                } else if (deposit > 0) {
+                    balance = balance + deposit;
+                    System.out.println("Account Nr: " + accountNr + " new balance after deposit is EUR " + balance);
+                    accountBalanceMap.put(accountNr, balance);
+                } else {
+                    System.out.println("No amount to deposit");
+                }
+
+            } else if (choice == 4) {
+                System.out.println("Insert account number:");
+                String accountNr = scanner.nextLine();
+                Double balance = accountBalanceMap.get(accountNr);
+                System.out.println("Account Nr: " + accountNr + " balance is EUR " + balance);
+                System.out.println("Insert withdraw amount:");
+                Double withdraw = scanner.nextDouble();
+                scanner.nextLine();
+                if (accountBalanceMap.get(accountNr) == null) {
+                    System.out.println("No account available. Create new account!");
+                } else if (withdraw < 1) {
+                    System.out.println("Nothing to withdraw");
+                } else if (balance >= withdraw) {
+                    balance = balance - withdraw;
+                    System.out.println("Account Nr: " + accountNr + " new balance after withdraw is EUR " + balance);
+                    accountBalanceMap.put(accountNr, balance);
+                } else {
+                    System.out.println("Not enough funds on the account.");
+                }
+
+            } else if (choice == 5) {
+                System.out.println("Insert Withdraw Account number:");
+                String withdrawAccount = scanner.nextLine();
+                Double withdrawAccountBalance = accountBalanceMap.get(withdrawAccount);
+                System.out.println("Account Nr: " + withdrawAccount + " balance is EUR " + withdrawAccountBalance);
+                System.out.println("Insert transfer amount");
+                Double transferAmount = scanner.nextDouble();
+                scanner.nextLine();
+                System.out.println("Insert Deposit Account number:");
+                String depositAccount = scanner.nextLine();
+                Double depositAccountBalance = accountBalanceMap.get(depositAccount);
+                if (accountBalanceMap.get(withdrawAccount) == null || accountBalanceMap.get(depositAccount) == null) {
+                    System.out.println("No account. Create new account!");
+                } else if (withdrawAccountBalance >= transferAmount) {
+                    withdrawAccountBalance = withdrawAccountBalance - transferAmount;
+                    depositAccountBalance = depositAccountBalance + transferAmount;
+                    accountBalanceMap.put(withdrawAccount, withdrawAccountBalance);
+                    accountBalanceMap.put(depositAccount, depositAccountBalance);
+                    System.out.println("After transaction:");
+                    System.out.println("Account Nr: " + withdrawAccount + " new balance is EUR " + withdrawAccountBalance);
+                    System.out.println("Account Nr: " + depositAccount + " new balance is EUR " + depositAccountBalance);
+
+                } else if (transferAmount < 1) {
+                    System.out.println("No amount to transfer");
+
+                } else {
+                    System.out.println("Not enough funds to transfer!");
+                }
+            } else if (choice == 6) {
+                System.out.println("Exit program");
                 break;
-            }
-            // TODO 1
-            // Add command: "createAccount ${accountNr}"
-            // this has to store accountNr with 0 balance
-            // TODO 2
-            // Add command: "getBalance ${accountNr}"
-            // this has to display account balance of specific acount
-            // TODO 3
-            // Add command: "depositMoney ${accountNr} ${amount}
-            // this has to add specified amount of money to account
-            // You have to check that amount is positive number
-            // TODO 4
-            // Add command: "withdrawMoney ${accountNr} ${amount}
-            // This has to remove specified amount of money from account
-            // You have to check that amount is positive number
-            // You may not allow this transaction if account balance would become negative
-            // TODO 5
-            // Add command: "transfer ${fromAccount} ${toAccount} ${amount}
-            // This has to remove specified amount from fromAccount and add it to toAccount
-            // Your application needs to check that toAccount is positive
-            // And from account has enough money to do that transaction
-            else {
+
+            } else {
                 System.out.println("Unknown command");
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
