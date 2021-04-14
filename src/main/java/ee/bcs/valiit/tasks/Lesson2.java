@@ -14,7 +14,7 @@ public class Lesson2 {
         System.out.println(Arrays.toString(reverseArray(jada)));
         System.out.println(min(jada));
         System.out.println(max(jada));*/
-        System.out.println(fibonacci(8));
+        System.out.println(fibonacci(57));
 
 
     }

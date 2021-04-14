@@ -7,12 +7,13 @@ import java.util.Arrays;
 public class Test1 {
     public static void main(String[] args) {
         //System.out.println(equalsThreeSeven(21));
-        //int[] array = new int[]{3, 5, 7, 2, 1};
+        int[] array = new int[]{3, 5, 7, 2, 1};
         //System.out.println(Arrays.toString(array));
         //System.out.println(Arrays.toString(addToArray(array, 3)));
         //System.out.println(howOld("9 years old"));
         //System.out.println(nthPower(array, 3));
         System.out.println(toBinary(64));
+        System.out.println(array(array));
 
     }
 
@@ -56,6 +57,17 @@ public class Test1 {
         }
 
         return -1;
+    }
+
+    public static int[] array(int[] x){
+        int[] array = new int[x.length];
+        array[0] = 0;
+
+//        for(int i = 1; i < x.length; i++) {
+//            array[i] = x[i];
+
+        return array;
+
     }
 
 

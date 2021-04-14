@@ -10,7 +10,7 @@ public class Lesson3 {
         System.out.println(reverseString("Marion"));
         System.out.println(isPrime(7));
         System.out.println(Arrays.toString(sort(new int[]{7, 1, 8, 23, 9})));*/
-        System.out.println(evenFibonacci(10));
+        System.out.println(evenFibonacci(80));
         //System.out.println(morseCode("kuul"));
     }
 
@@ -89,7 +89,6 @@ public class Lesson3 {
                     }
                 }
             }
-
             return sum;
         }
     }

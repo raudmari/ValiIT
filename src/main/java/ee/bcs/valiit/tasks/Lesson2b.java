@@ -29,7 +29,8 @@ public class Lesson2b {
 
     // TODO tagasta massiiv milles oleks numbrid 1,2,3,4,5
     public static int[] sampleArray() {
-        return new int[]{1, 2, 3, 4, 5};
+        int[] x = new int[]{1, 2, 3, 4, 5};
+        return x;
     }
 
     // TODO loo massiiv mis saab sisendiks n ja tagastab massiivi suurusega n
