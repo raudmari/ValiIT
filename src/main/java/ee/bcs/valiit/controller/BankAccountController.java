@@ -12,7 +12,7 @@ public class BankAccountController {
 
     @PostMapping("bankAccount/createAccount")
     public void createAccount(@RequestBody BankAccount request) {
-   //     accountMap.put(request.getIban(), request.getBalance(), request.getOwner(), request.isLocked());
+   //    accountMap.put(request.getIban(), request.getBalance(), request.getOwner(), request.isLocked());
     }
 
 }
