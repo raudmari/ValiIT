@@ -10,8 +10,8 @@ public class Lesson4Controller {
 
     // http://localhost:8080/createAccount/EE123/0.00
     @GetMapping("createAccount/{accountNr}/{initialBalance}")
-    public void createAccount(@PathVariable("accountNr") String accountNr, @PathVariable("initialBalance") double initialBalance){
-
+    public void crateAccount(@PathVariable("accountNr") String accountNr, @PathVariable("initialBalance") double initialBalance){
+        Lesson4.crateAccount(accountNr,initialBalance);
     }
 
     // http://localhost:8080/getBalance/EE123
