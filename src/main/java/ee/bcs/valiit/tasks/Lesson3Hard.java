@@ -8,7 +8,7 @@ public class Lesson3Hard {
 
     static Random random = new Random();
     static int randomNumber = random.nextInt(100);
-    int count = 0;
+    static int count = 0;
 
 
     // TODO kirjuta mäng mis leiab suvalise numbri 0-99, mille kasutaja peab ära arvama
@@ -17,7 +17,6 @@ public class Lesson3Hard {
     // numbri ära aramise korral peab programm välja trükkima mitu katset läks numbri ära arvamiseks
 
     public static void main(String[] args) {
-
 /*        Random random = new Random();
         int i = random.nextInt(100);
         // System.out.println(i);
@@ -43,20 +42,21 @@ public class Lesson3Hard {
             }
             count++;
         }
-
-
         System.out.println("Well done! Your guess is correct. You managed to guess the number on turn " + count + ".");*/
     }
-    // kasutamaks veebis
-    public static String playerGuess(int num) {
-            if (num < randomNumber) {
-                return "Number should be bigger.";
-            } else if (num > randomNumber) {
-                return "Number should be smaller.";
-            } else {
-                return "Well done! Your guess is correct.";
-            }
+    // kasutamaks esile veebis
+    public static String playerGuess(int num){
+        count++;
+        if (num < randomNumber) {
+            return "Number should be bigger.";
+        } else if (num > randomNumber) {
+            return "Number should be smaller.";
+        } else {
+            return "Well done! Your guess is correct. Arvasid ära" + count + " korda";
+        }
     }
+
+
 }
 
 

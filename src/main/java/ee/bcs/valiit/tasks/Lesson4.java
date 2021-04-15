@@ -10,7 +10,7 @@ public class Lesson4 {
 
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+/*        Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println(
                     "1. Create Account\n" +
@@ -112,10 +112,58 @@ public class Lesson4 {
             } else {
                 System.out.println("Unknown command");
             }
+        }*/
+
+    }
+
+    public void crateAccount(String accountNr, Double initialBalance) {
+        accountBalanceMap.put(accountNr, initialBalance);
+    }
+
+    public static String getBalance(String accountNr) {
+        if (accountBalanceMap.get(accountNr) == null) {
+            return "No account available";
+        } else {
+            return "Your balance is " + accountBalanceMap.get(accountNr);
         }
     }
-    public static String crateAccount(){
-        return "";
+
+    public static String depositMoney(String accountNr, double deposit) {
+        if (accountBalanceMap.get(accountNr) == null) {
+            return "No account available";
+        } else if (deposit < 1) {
+            return "Nothing to deposit";
+        } else {
+            double balance = accountBalanceMap.get(accountNr) + deposit;
+            accountBalanceMap.put(accountNr, balance);
+            return "Your balance is "+ balance;
+        }
+    }
+
+    public static String withdrawMoney(String accountNr, double withdraw) {
+        if (accountBalanceMap.get(accountNr) == null) {
+            return "No account available";
+        } else if (withdraw > accountBalanceMap.get(accountNr)) {
+            return "Not enough funds";
+        } else {
+            double balance = accountBalanceMap.get(accountNr) - withdraw;
+            accountBalanceMap.put(accountNr, balance);
+            return "Your new balance is " + balance;
+        }
+    }
+
+    public static String transferMoney(String accountWithdraw, String accountDeposit, double transferAmount) {
+        if (accountBalanceMap.get(accountWithdraw) == null && accountBalanceMap.get(accountWithdraw) == null) {
+            return "No account available";
+        } else if (accountBalanceMap.get(accountWithdraw) < transferAmount) {
+            return "Not enough funds";
+        } else {
+            double withdrawMoney = accountBalanceMap.get(accountWithdraw) - transferAmount;
+            accountBalanceMap.put(accountWithdraw, withdrawMoney);
+            double depositMoney = accountBalanceMap.get(accountDeposit) + transferAmount;
+            accountBalanceMap.put(accountDeposit, depositMoney);
+            return "Your new balance is " + depositMoney;
+        }
     }
 }
 
