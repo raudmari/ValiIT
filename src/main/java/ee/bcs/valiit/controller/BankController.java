@@ -1,6 +1,6 @@
 package ee.bcs.valiit.controller;
 
-import ee.bcs.valiit.solution.controller.CreateAccountRequest;
+
 import ee.bcs.valiit.tasks.Lesson4;
 import ee.bcs.valiit.tdoKlassid.Bank;
 import org.springframework.web.bind.annotation.*;
