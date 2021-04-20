@@ -3,6 +3,8 @@ package ee.bcs.valiit.controller;
 
 import ee.bcs.valiit.tasks.Lesson4;
 import ee.bcs.valiit.tdoKlassid.Bank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -10,6 +12,7 @@ import java.util.Map;
 
 @RestController
 public class BankController {
+
     private static Map<String, Double> accountBalanceMap = new HashMap<>();
 
     // http://localhost:8080/bank/createAccount
