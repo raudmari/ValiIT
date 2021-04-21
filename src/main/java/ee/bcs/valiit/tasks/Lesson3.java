@@ -6,12 +6,13 @@ import java.util.*;
 public class Lesson3 {
 
     public static void main(String[] args) {
- /*       System.out.println(factorial(6));
+       /* System.out.println(factorial(6));
         System.out.println(reverseString("Marion"));
-        System.out.println(isPrime(7));
-        System.out.println(Arrays.toString(sort(new int[]{7, 1, 8, 23, 9})));*/
-        System.out.println(evenFibonacci(80));
+        System.out.println(isPrime(7));*/
+        System.out.println(Arrays.toString(sort(new int[]{-3, -2, -1})));
+        //System.out.println(evenFibonacci(80));
         //System.out.println(morseCode("kuul"));
+
     }
 
     // TODO tagasta x faktoriaal.
@@ -53,18 +54,17 @@ public class Lesson3 {
     // TODO sorteeri massiiv suuruse järgi.
     // TODO kasuta tsükleid, ära kasuta ühtegi olemasolevat sort funktsiooni
     public static int[] sort(int[] a) {
-        int[] array = new int[a.length];            // loon uue array, mille pikkus on sama suur kui sisend arrayil
         for (int i = 0; i < a.length; i++) {        // loon luubi, mis käib läbi loobi pikkuse
             for (int j = 0; j < a.length; j++) {    // loon teise loobi, et loopiga iga element läbi risti läbi.
                 int temp = 0;                       // loon ajutise muutuja, mida kasutan, et ajutiselt määrata kõige suurema väärtusega element
-                if (a[i] > array[j]) {              // loon tingimuse, mis võrdleb kas element on suurem kui
+                if (a[i] > a[j]) {              // loon tingimuse, mis võrdleb kas element on suurem kui
                     temp = a[i];
-                    a[i] = array[j];
-                    array[j] = temp;
+                    a[i] = a[j];
+                    a[j] = temp;
                 }
             }
         }
-        return array;
+        return a;
     }
 
 

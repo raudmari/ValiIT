@@ -34,13 +34,6 @@ public class BankAccountRepository {
         return jdbcTemplate.queryForObject(getBalance, paramMap1, Double.class);
     }
 
-    public boolean accountStatus(String iban) {
-        String accountStatus = "SELECT account_status FROM bank_account WHERE iban = :iban";
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("iban", iban);
-        return jdbcTemplate.queryForObject(accountStatus, paramMap, Boolean.class);
-    }
-
     public void updateBalance(String iban, double amount) {
         String depositAmount = "UPDATE bank_account SET balance = :amount WHERE iban = :iban";
         Map<String, Object> paramMap2 = new HashMap<>();
@@ -49,15 +42,12 @@ public class BankAccountRepository {
         jdbcTemplate.update(depositAmount, paramMap2);
     }
 
-}
-
-
-/*    public String accountStatus(@PathVariable("iban") String iban, @PathVariable("lock") boolean lock) {
-        String  accountStatus = "UPDATE bank_account SET account_status = :lock WHERE iban = :iban";
+    public boolean accountStatus(String iban) {
+        String accountStatus = "SELECT account_status FROM bank_account WHERE iban = :iban";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("iban", iban);
-        paramMap.put("lock", lock );
-        jdbcTemplate.update(accountStatus, paramMap);
-        return "Account status changed";
-    }*/
+        return jdbcTemplate.queryForObject(accountStatus, paramMap, Boolean.class);
+    }
+}
+
 

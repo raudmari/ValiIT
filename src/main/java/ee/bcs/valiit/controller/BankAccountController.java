@@ -115,4 +115,5 @@ public class BankAccountController {
         return bankAccountService.accountStatus(iban,lock);
         //accountMap.get(iban).setAccountStatus(false);
     }
+
 }
