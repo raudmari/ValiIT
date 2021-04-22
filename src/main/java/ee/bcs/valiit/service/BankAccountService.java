@@ -1,5 +1,6 @@
 package ee.bcs.valiit.service;
 
+import ee.bcs.valiit.exception.ApplicationException;
 import ee.bcs.valiit.repository.BankAccountRepository;
 import ee.bcs.valiit.tdoKlassid.BankAccount;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class BankAccountService {
     public String getBalance(String iban) {
         Boolean response = bankAccountRepository.accountStatus(iban);
         if (response == false) {
-            return "Account locked! Turn to your account manager";
+            throw new ApplicationException("Account is locked");
         } else {
             Double balance = bankAccountRepository.getBalance(iban);
             return "Account balance is € " + balance;
@@ -37,9 +38,9 @@ public class BankAccountService {
     public String depositMoney(String iban, double amount) {
         Boolean response = bankAccountRepository.accountStatus(iban);
         if (response == false) {
-            return "Account locked! Turn to your account manager";
+            throw new ApplicationException("Account is locked");
         } else if (amount < 1) {
-            return "Nothing to deposit";
+            throw new ApplicationException("Nothing to deposit");
         } else {
             Double balance = bankAccountRepository.getBalance(iban);
             Double newBalance = balance + amount;
@@ -52,9 +53,9 @@ public class BankAccountService {
         Boolean response = bankAccountRepository.accountStatus(iban);
         Double balance = bankAccountRepository.getBalance(iban);
         if (response == false) {
-            return "Account locked! Turn to your account manager";
+            throw new ApplicationException("Account is locked");
         } else if (balance < amount) {
-            return "Not enough funds";
+            throw new ApplicationException("Not enough funds on account");
         } else {
             Double newBalance = balance - amount;
             bankAccountRepository.updateBalance(iban, newBalance);
@@ -68,9 +69,9 @@ public class BankAccountService {
         Double balanceFrom = bankAccountRepository.getBalance(accountWithdraw);
         Double balanceTo = bankAccountRepository.getBalance(accountDeposit);
         if (response1 == false || response2 == false) {
-            return "One of the accounts is locked. Transfer money not possible.";
+            throw new ApplicationException("One of the accounts is locked. Transfer money not possible.");
         } else if (balanceFrom < transferAmount) {
-            return "Not enough funds!";
+            throw new ApplicationException ("Not enough funds on account");
         } else {
             Double newBalanceFrom = balanceFrom - transferAmount;
             bankAccountRepository.updateBalance(accountWithdraw, newBalanceFrom);

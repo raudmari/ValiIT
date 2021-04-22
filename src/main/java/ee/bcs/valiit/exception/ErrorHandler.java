@@ -4,12 +4,14 @@ import ee.bcs.valiit.solution.exception.SampleApplicationException;
 import ee.bcs.valiit.solution.exception.SampleErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+@ControllerAdvice
 public class ErrorHandler {
 
     @ExceptionHandler(ApplicationException.class)
-    public ResponseEntity<Object> handleSampleException(ApplicationException e){
+    public ResponseEntity<Object> handleException(ApplicationException e){
         return new ResponseEntity<>(new ErrorResponse(e.getMessage(), 400),
                 HttpStatus.BAD_REQUEST);
     }

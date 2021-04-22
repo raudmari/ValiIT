@@ -22,7 +22,7 @@ public class BankAccountRepository {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("owner", request.getOwner());
         paramMap.put("iban", request.getIban());
-        paramMap.put("balance", request.getBalance());
+        paramMap.put("balance", 0.0);
         paramMap.put("account_status", request.isAccountStatus());
         jdbcTemplate.update(sql, paramMap);
     }
@@ -33,7 +33,7 @@ public class BankAccountRepository {
         paramMap1.put("iban", iban);
         return jdbcTemplate.queryForObject(getBalance, paramMap1, Double.class);
     }
-
+    
     public void updateBalance(String iban, double amount) {
         String depositAmount = "UPDATE bank_account SET balance = :amount WHERE iban = :iban";
         Map<String, Object> paramMap2 = new HashMap<>();
@@ -41,7 +41,7 @@ public class BankAccountRepository {
         paramMap2.put("iban", iban);
         jdbcTemplate.update(depositAmount, paramMap2);
     }
-
+    
     public boolean accountStatus(String iban) {
         String accountStatus = "SELECT account_status FROM bank_account WHERE iban = :iban";
         Map<String, Object> paramMap = new HashMap<>();
