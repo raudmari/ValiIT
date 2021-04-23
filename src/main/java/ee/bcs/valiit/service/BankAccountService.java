@@ -21,9 +21,6 @@ public class BankAccountService {
     private BankAccountRepository bankAccountRepository;
 
     @Autowired
-    private NamedParameterJdbcTemplate jdbcTemplate;
-
-    @Autowired
     private HibernateBankAccountRepository hibernateBankAccountRepository;
 
     public void createAccount(BankAccount request) {
@@ -95,10 +92,12 @@ public class BankAccountService {
             throw new ApplicationException ("Not enough funds on account");
         } else {
             Double newBalanceFrom = balanceFrom - transferAmount;
-            hibernateBankAccountRepository.getOne(accountWithdraw).setBalance(newBalanceFrom);
+            accountFrom.setBalance(newBalanceFrom);
+            hibernateBankAccountRepository.save(accountFrom);
             //bankAccountRepository.updateBalance(accountWithdraw, newBalanceFrom);
             Double newBalanceTo = balanceTo + transferAmount;
-            hibernateBankAccountRepository.getOne(accountDeposit).setBalance(newBalanceTo);
+            accountTo.setBalance(newBalanceTo);
+            hibernateBankAccountRepository.save(accountTo);
             //bankAccountRepository.updateBalance(accountWithdraw, newBalanceTo);
             return "New balance after transfer for " + accountWithdraw + " is EUR " + newBalanceFrom + "\n" +
                     "New balance after transfer for " + accountDeposit + " is EUR " + newBalanceTo;
