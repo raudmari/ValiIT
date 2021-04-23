@@ -42,10 +42,12 @@ public class BankAccountRepository {
         jdbcTemplate.update(depositAmount, paramMap2);
     }
     
-    public boolean accountStatus(String iban) {
-        String accountStatus = "SELECT account_status FROM bank_account WHERE iban = :iban";
+    public boolean accountStatus(String iban, boolean lock) {
+        String accountStatus = "UPDATE bank_account SET account_status = :lock WHERE iban = :iban";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("iban", iban);
+        paramMap.put("lock", lock);
+        jdbcTemplate.update(accountStatus, paramMap);
         return jdbcTemplate.queryForObject(accountStatus, paramMap, Boolean.class);
     }
 }

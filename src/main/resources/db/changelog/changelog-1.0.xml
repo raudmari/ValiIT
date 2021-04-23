@@ -26,5 +26,8 @@
             <column name="transaction_date_time" type="timestamp"/>
         </createTable>
     </changeSet>
+    <changeSet id="2021-04-23 drop id column" author="Marion Raudsepp">
+        <dropColumn tableName="bank_account" columnName="id"/>
+    </changeSet>
 
 </databaseChangeLog>
