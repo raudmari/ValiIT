@@ -27,21 +27,21 @@ public class BankAccountService {
         bankAccountRepository.createAccount(request);
     }
 
-    public String getBalance(String iban) {
+    public Double getBalance(String iban) {
         BankAccountHibernate bankAccount = hibernateBankAccountRepository.getOne(iban);
        // Boolean response = bankAccountRepository.accountStatus(iban);
         if (bankAccount.getAccountStatus() == false) {
             throw new ApplicationException("Account is locked");
         } else {
 
-             return "Account balance is € " + bankAccount.getBalance();
+             return bankAccount.getBalance();
 
             //Double balance = bankAccountRepository.getBalance(iban);
             // return "Account balance is € " + balance;
         }
     }
 
-    public String depositMoney(String iban, double amount) {
+    public Double depositMoney(String iban, double amount) {
         BankAccountHibernate bankAccount = hibernateBankAccountRepository.getOne(iban);
         //Boolean response = bankAccountRepository.accountStatus(iban);
         if (bankAccount.getAccountStatus() == false) {
@@ -55,11 +55,11 @@ public class BankAccountService {
             bankAccount.setBalance(newBalance);
             hibernateBankAccountRepository.save(bankAccount);
             //bankAccountRepository.updateBalance(iban, newBalance);
-            return "New balance is EUR " + newBalance;
+            return newBalance;
         }
     }
 
-    public String withdrawMoney(String iban, double amount) {
+    public Double withdrawMoney(String iban, double amount) {
         BankAccountHibernate bankAccount = hibernateBankAccountRepository.getOne(iban);
         //Boolean response = bankAccountRepository.accountStatus(iban);
         Double balance = bankAccount.getBalance();
@@ -73,11 +73,11 @@ public class BankAccountService {
             bankAccount.setBalance(newBalance);
             hibernateBankAccountRepository.save(bankAccount);
             //bankAccountRepository.updateBalance(iban, newBalance);
-            return "New balance is " + (newBalance);
+            return newBalance;
         }
     }
 
-    public String transferMoney(String accountWithdraw, double transferAmount, String accountDeposit) {
+    public void transferMoney(String accountWithdraw, double transferAmount, String accountDeposit) {
         BankAccountHibernate accountFrom = hibernateBankAccountRepository.getOne(accountWithdraw);
         BankAccountHibernate accountTo = hibernateBankAccountRepository.getOne(accountDeposit);
         //Boolean response1 = bankAccountRepository.accountStatus(accountWithdraw);
@@ -99,15 +99,26 @@ public class BankAccountService {
             accountTo.setBalance(newBalanceTo);
             hibernateBankAccountRepository.save(accountTo);
             //bankAccountRepository.updateBalance(accountWithdraw, newBalanceTo);
-            return "New balance after transfer for " + accountWithdraw + " is EUR " + newBalanceFrom + "\n" +
-                    "New balance after transfer for " + accountDeposit + " is EUR " + newBalanceTo;
+
         }
     }
 
-    public String accountStatus(String iban, boolean lock) {
+    public boolean accountStatus(String iban, boolean lock) {
+        BankAccountHibernate bankAccount = hibernateBankAccountRepository.getOne(iban);
         //bankAccountRepository.accountStatus(iban, lock);
-        hibernateBankAccountRepository.getOne(iban).setAccountStatus(lock);
-        return "Account status changed";
+        bankAccount.setAccountStatus(lock);
+        hibernateBankAccountRepository.save(bankAccount);
+        return bankAccount.getAccountStatus();
     }
+
+    public void deleteAccount(String iban) {
+        BankAccountHibernate bankAccount = hibernateBankAccountRepository.getOne(iban);
+        if (bankAccount.getAccountStatus() == false) {
+            throw new ApplicationException("Account is locked");
+        } else {
+            hibernateBankAccountRepository.delete(bankAccount);
+        }
+    }
+
 
 }

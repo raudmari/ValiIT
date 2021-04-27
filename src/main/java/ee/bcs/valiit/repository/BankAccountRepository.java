@@ -27,6 +27,13 @@ public class BankAccountRepository {
         jdbcTemplate.update(sql, paramMap);
     }
 
+    public void deleteAccount(String iban) {
+        String deleteAccount = "DELETE FROM bank_account WHERE iban = :iban";
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("iban", iban);
+        jdbcTemplate.update(deleteAccount,paramMap);
+    }
+
     public double getBalance(String iban) {
         String getBalance = "SELECT balance FROM bank_account WHERE iban = :iban";
         Map<String, Object> paramMap1 = new HashMap<>();
@@ -42,13 +49,13 @@ public class BankAccountRepository {
         jdbcTemplate.update(depositAmount, paramMap2);
     }
     
-    public boolean accountStatus(String iban, boolean lock) {
+    public void accountStatus(String iban, boolean lock) {
         String accountStatus = "UPDATE bank_account SET account_status = :lock WHERE iban = :iban";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("iban", iban);
         paramMap.put("lock", lock);
         jdbcTemplate.update(accountStatus, paramMap);
-        return jdbcTemplate.queryForObject(accountStatus, paramMap, Boolean.class);
+        jdbcTemplate.queryForObject(accountStatus, paramMap, Boolean.class);
     }
 }
 

@@ -36,6 +36,7 @@ public class BankAccountController {
     //private static Map<String, BankAccount> accountMap = new HashMap<>();
 
     // http://localhost:8080/bankAccount/createAccount
+    @CrossOrigin
     @PostMapping("bankAccount/createAccount")
     public void createAccount(@RequestBody BankAccount request) {
         bankAccountService.createAccount(request);
@@ -43,8 +44,9 @@ public class BankAccountController {
     }
 
     // http://localhost:8080/bankAccount/getBalance
+    @CrossOrigin
     @GetMapping("bankAccount/getBalance/{iban}")
-    public String getBalance(@PathVariable("iban") String iban) {
+    public Double getBalance(@PathVariable("iban") String iban) {
         return bankAccountService.getBalance(iban);
 
      /*   if (accountMap.get(iban) == null) {
@@ -58,8 +60,9 @@ public class BankAccountController {
     }
 
     // http://localhost:8080/bankAccount/depositMoney/
+    @CrossOrigin
     @GetMapping("bankAccount/depositMoney/{iban}/{amount}")
-    public String depositMoney(@PathVariable("iban") String iban, @PathVariable("amount") double amount) {
+    public Double depositMoney(@PathVariable("iban") String iban, @PathVariable("amount") double amount) {
         return bankAccountService.depositMoney(iban, amount);
 /*        if (accountMap.get(iban) == null) {
             return "No account. Make new account.";
@@ -75,8 +78,9 @@ public class BankAccountController {
     }
 
     // http://localhost:8080/bankAccount/withdrawMoney/
+    @CrossOrigin
     @GetMapping("bankAccount/withdrawMoney/{iban}/{amount}")
-    public String withdrawMoney(@PathVariable("iban") String iban, @PathVariable("amount") double amount) {
+    public Double withdrawMoney(@PathVariable("iban") String iban, @PathVariable("amount") double amount) {
         return bankAccountService.withdrawMoney(iban, amount);
    /*     if (accountMap.get(iban) == null) {
             return "No account. Make new account.";
@@ -91,11 +95,12 @@ public class BankAccountController {
     }
 
     // http://localhost:8080/bankAccount/transferMoney/
+    @CrossOrigin
     @GetMapping("bankAccount/transferMoney/{ibanFrom}/{amount}/{ibanTo}")
-    public String transferMoney(@PathVariable("ibanFrom") String accountWithdraw,
+    public void transferMoney(@PathVariable("ibanFrom") String accountWithdraw,
                                        @PathVariable("amount") double transferAmount,
                                        @PathVariable("ibanTo") String accountDeposit) {
-        return bankAccountService.transferMoney(accountWithdraw,transferAmount,accountDeposit);
+        bankAccountService.transferMoney(accountWithdraw,transferAmount,accountDeposit);
         /*if (accountMap.get(accountWithdraw) == null && accountMap.get(accountWithdraw) == null) {
             return "No account available";
         } else if (accountMap.get(accountWithdraw).getBalance() < transferAmount) {
@@ -111,9 +116,17 @@ public class BankAccountController {
     }
 
     @GetMapping("bankAccount/accountStatus/{iban}/{lock}")
-    public String accountStatus(@PathVariable("iban") String iban, @PathVariable("lock") boolean lock) {
+    @CrossOrigin
+    public boolean accountStatus(@PathVariable("iban") String iban, @PathVariable("lock") boolean lock) {
         return bankAccountService.accountStatus(iban,lock);
         //accountMap.get(iban).setAccountStatus(false);
+    }
+
+    @GetMapping("bankAccount/deleteAccount/{iban}")
+    @CrossOrigin
+    public void deleteAccount(@PathVariable("iban") String iban){
+        bankAccountService.deleteAccount(iban);
+
     }
 
 }

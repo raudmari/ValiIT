@@ -5,46 +5,185 @@
     <title>Bank</title>
 </head>
 <body>
-<h1>Bank Account</h1>
-<h3>Create Account</h3>
-<input id="iban">
-<label for="iban">IBAN</label>
-<br>
-<input id="owner">
-<label for="owner">Owner</label>
-<br>
-<button>Create Account</button>
+<h2>Bank Account</h2>
 
-<h3>Get Balance</h3>
-<label>IBAN</label>
-<input>
-<button>Get Balance</button>
 <p>
-    <label>Balance is:</label>
+    <input id="owner">
+    <label for="owner">Owner</label>
+    <input id="iban">
+    <label for="iban">IBAN</label>
+</p>
+<p>
+    <button id="createAccountButton">Create Account</button>
 </p>
 
-<h3>Deposit Money</h3>
-<label>IBAN</label>
-<input>
-<label>Amount</label>
-<input>
-<button>Deposit Money</button>
+<p>
+    <button id="getBalanceButton">Get Balance</button>
+</p>
+<p>
+    <lable>Info: </lable>
+    <span id="info"></span>
+</p>
+<p>
+    <input id ="amount">
+    <label>Amount</label>
+</p>
+<p>
+    <button id="depositMoneyButton">Deposit Money</button>
+</p>
+<p>
+    <button id="withdrawMoneyButton">Withdraw Money</button>
+</p>
 
+<p>
+    <input id="ibanFrom">
+    <label>IBAN From</label>
+</p>
+<p>
+    <input id="ibanTo">
+    <label>IBAN To</label>
+</p>
 
-<h3>Withdraw Money</h3>
-<label>IBAN</label>
-<input>
-<label>Amount</label>
-<input>
-<button>Withdraw Money</button>
+<p>
+    <button id="transferMoneyButton">Transfer Money</button>
+</p>
+<p>
+    <input id ="accountStatus">
+    <label>Account Status</label>
+</p>
+<p>
+    <button id="statusChange">Change Account Status</button>
+</p>
 
-<h3>Transfer Money</h3>
-<label>IBAN from</label>
-<input>
-<label>IBAN to</label>
-<input>
-<label>Amount</label>
-<input>
-<button>Transfer Money</button>
+<p>
+    <button id="deleteAccountButton">Delete Account</button>
+</p>
+
+<script>
+    let iban = document.getElementById("iban");
+    let owner = document.getElementById("owner")
+    let amount = document.getElementById("amount");
+    let ibanFrom = document.getElementById("ibanFrom");
+    let ibanTo = document.getElementById("ibanTo")
+    let info = document.getElementById("info");
+    let createAccount = document.getElementById("createAccountButton");
+    let getBalance = document.getElementById("getBalanceButton");
+    let depositMoney = document.getElementById("depositMoneyButton");
+    let withdrawMoney = document.getElementById("withdrawMoneyButton");
+    let transferMoney = document.getElementById("transferMoneyButton");
+    let accountStatus = document.getElementById("accountStatus");
+    let changeAccountStatus = document.getElementById("statusChange")
+    let deleteAccount = document.getElementById("deleteAccountButton")
+    createAccount.onclick = function () {
+        let requestObject = {
+            'owner':owner.value,
+            'iban': iban.value,
+            'balance': 0.0,
+            'accountStatus': true
+        }
+        let url = "http://localhost:8080/bankAccount/createAccount";
+        let configuration = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requestObject)
+        }
+        fetch(url, configuration)
+            .then(function(x){
+                if(x.status > 200){
+                    x.json().then(response=>info.innerText = response.message)
+                } else {
+                    x.text().then(response => info.innerText = "Account created!");
+                }
+            });
+        }
+    getBalance.onclick = function () {
+        let requestObject = {
+            'iban': iban.value,
+            'balance':0
+        }
+        fetch("http://localhost:8080/bankAccount/getBalance/" + iban.value)
+            .then(function(x){
+                if(x.status > 200){
+                    x.json().then(response=>info.innerText = response.message)
+                } else {
+                    x.text().then(response => info.innerText = "Account balance is EUR" + response);
+                }
+            });
+    }
+    depositMoney.onclick = function () {
+        let requestObject = {
+            'iban':iban.value,
+            'amount':amount.value
+        }
+        fetch("http://localhost:8080/bankAccount/depositMoney/" + iban.value + "/" + amount.value)
+            .then(function(x){
+                if(x.status > 200){
+                    x.json().then(response=>info.innerText = response.message)
+                } else {
+                    x.text().then(response => info.innerText = "Account balance after deposit is EUR" + response);
+                }
+            });
+    }
+    withdrawMoney.onclick = function () {
+        let requestObject = {
+            'iban':iban.value,
+            'amount':amount.value
+        }
+        fetch("http://localhost:8080/bankAccount/withdrawMoney/" + iban.value + "/" + amount.value)
+            .then(function(x){
+                if(x.status > 200){
+                    x.json().then(response=>info.innerText = response.message)
+                } else {
+                    x.text().then(response => info.innerText = "Account balance after transfer is EUR" + response);
+                }
+            });
+    }
+    transferMoney.onclick = function () {
+        let requestObject = {
+            'ibanFrom':ibanFrom.value,
+            'amount':amount.value,
+            'ibanTo':ibanTo.value
+        }
+        fetch("http://localhost:8080/bankAccount/transferMoney/" + ibanFrom.value + "/" + amount.value + "/" + ibanTo.value)
+            .then(function(x){
+                if(x.status > 200){
+                    x.json().then(response=>info.innerText = response.message)
+                } else {
+                    x.text().then(response => info.innerText = "Transfer made!");
+                }
+            });
+    }
+    changeAccountStatus.onclick = function (){
+        let requestObject = {
+            'iban': iban.value,
+            'accountStatus': accountStatus.value
+        }
+        fetch("http://localhost:8080/bankAccount/accountStatus/" + iban.value + "/" + accountStatus.value)
+            .then(function(x){
+                if(x.status > 200){
+                    x.json().then(response=>info.innerText = response.message)
+                } else {
+                    x.text().then(response => info.innerText = "Account status " + response);
+                }
+            });
+    }
+    deleteAccount.onclick = function () {
+        let requestObject = {
+            'iban': iban.value
+        }
+        fetch("http://localhost:8080/bankAccount/deleteAccount/" + iban.value)
+            .then(function(x){
+                if(x.status > 200){
+                    x.json().then(response=>info.innerText = response.message)
+                } else {
+                    x.text().then(response => info.innerText = "Account deleted");
+                }
+            });
+    }
+
+</script>
+
 </body>
 </html>
