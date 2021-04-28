@@ -4,6 +4,7 @@ import ee.bcs.valiit.exception.ApplicationException;
 import ee.bcs.valiit.hibernate.BankAccountHibernate;
 import ee.bcs.valiit.hibernate.HibernateBankAccountRepository;
 import ee.bcs.valiit.repository.BankAccountRepository;
+import ee.bcs.valiit.tdoKlassid.AllAccounts;
 import ee.bcs.valiit.tdoKlassid.BankAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -33,9 +36,7 @@ public class BankAccountService {
         if (bankAccount.getAccountStatus() == false) {
             throw new ApplicationException("Account is locked");
         } else {
-
              return bankAccount.getBalance();
-
             //Double balance = bankAccountRepository.getBalance(iban);
             // return "Account balance is € " + balance;
         }
@@ -55,6 +56,7 @@ public class BankAccountService {
             bankAccount.setBalance(newBalance);
             hibernateBankAccountRepository.save(bankAccount);
             //bankAccountRepository.updateBalance(iban, newBalance);
+
             return newBalance;
         }
     }
@@ -99,7 +101,6 @@ public class BankAccountService {
             accountTo.setBalance(newBalanceTo);
             hibernateBankAccountRepository.save(accountTo);
             //bankAccountRepository.updateBalance(accountWithdraw, newBalanceTo);
-
         }
     }
 
@@ -120,5 +121,12 @@ public class BankAccountService {
         }
     }
 
-
+    public List<AllAccounts> getAllAccounts() {
+        List<BankAccountHibernate> info = hibernateBankAccountRepository.findAll();
+        List<AllAccounts> allAccounts = new ArrayList<>();
+        for (BankAccountHibernate hibernate : info) {
+            allAccounts.add(new AllAccounts(hibernate));
+        }
+        return allAccounts;
+    }
 }

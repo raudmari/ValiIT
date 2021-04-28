@@ -1,5 +1,7 @@
 package ee.bcs.valiit.repository;
 
+import ee.bcs.valiit.solution.controller.SampleAccount2RowMapper;
+import ee.bcs.valiit.tdoKlassid.AllAccounts;
 import ee.bcs.valiit.tdoKlassid.BankAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -8,7 +10,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.swing.tree.RowMapper;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -57,6 +61,7 @@ public class BankAccountRepository {
         jdbcTemplate.update(accountStatus, paramMap);
         jdbcTemplate.queryForObject(accountStatus, paramMap, Boolean.class);
     }
+
 }
 
 

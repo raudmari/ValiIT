@@ -1,6 +1,7 @@
 package ee.bcs.valiit.controller;
 
 import ee.bcs.valiit.service.BankAccountService;
+import ee.bcs.valiit.tdoKlassid.AllAccounts;
 import ee.bcs.valiit.tdoKlassid.BankAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,8 +20,6 @@ public class BankAccountController {
     @Autowired
     private BankAccountService bankAccountService;
 
-
-
  /*   private class ObjectRowMapper implements RowMapper<BankAccount> {
         @Override
         public BankAccount mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -31,9 +30,8 @@ public class BankAccountController {
             bankAccount.setAccountStatus(resultSet.getBoolean("account_status"));
             return bankAccount;
         }
-    }*/
-
-    //private static Map<String, BankAccount> accountMap = new HashMap<>();
+    }
+    private static Map<String, BankAccount> accountMap = new HashMap<>();*/
 
     // http://localhost:8080/bankAccount/createAccount
     @CrossOrigin
@@ -126,7 +124,15 @@ public class BankAccountController {
     @CrossOrigin
     public void deleteAccount(@PathVariable("iban") String iban){
         bankAccountService.deleteAccount(iban);
-
     }
+
+    @GetMapping("bankAccount/getAllAccounts")
+    @CrossOrigin
+    public List<AllAccounts> getAllAccounts(){
+        return bankAccountService.getAllAccounts();
+    }
+
+
+
 
 }
