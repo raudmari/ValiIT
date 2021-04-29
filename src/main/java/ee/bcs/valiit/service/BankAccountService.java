@@ -8,12 +8,14 @@ import ee.bcs.valiit.hibernate.TransactionHibernate;
 import ee.bcs.valiit.repository.BankAccountRepository;
 import ee.bcs.valiit.tdoKlassid.AllAccounts;
 import ee.bcs.valiit.tdoKlassid.BankAccount;
+import liquibase.pro.packaged.L;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +53,7 @@ public class BankAccountService {
         BankAccountHibernate bankAccount = hibernateBankAccountRepository.getOne(iban);
         TransactionHibernate transactions = new TransactionHibernate();
         transactions.setIban(iban);
+        transactions.setTransactionDateTime(LocalDateTime.now());
         //Boolean response = bankAccountRepository.accountStatus(iban);
         if (bankAccount.getAccountStatus() == false) {
             throw new ApplicationException("Account is locked");
@@ -75,6 +78,9 @@ public class BankAccountService {
         //Boolean response = bankAccountRepository.accountStatus(iban);
         Double balance = bankAccount.getBalance();
         //Double balance = bankAccountRepository.getBalance(iban);
+        TransactionHibernate transactions = new TransactionHibernate();
+        transactions.setIban(iban);
+        transactions.setTransactionDateTime(LocalDateTime.now());
         if (bankAccount.getAccountStatus() == false) {
             throw new ApplicationException("Account is locked");
         } else if (balance < amount) {
@@ -82,7 +88,9 @@ public class BankAccountService {
         } else {
             Double newBalance = balance - amount;
             bankAccount.setBalance(newBalance);
+            transactions.setWithdraw(amount);
             hibernateBankAccountRepository.save(bankAccount);
+            hibernateTransactionRepository.save(transactions);
             //bankAccountRepository.updateBalance(iban, newBalance);
             return newBalance;
         }
@@ -97,6 +105,10 @@ public class BankAccountService {
         Double balanceTo = accountTo.getBalance();
         //Double balanceFrom = bankAccountRepository.getBalance(accountWithdraw);
         //Double balanceTo = bankAccountRepository.getBalance(accountDeposit);
+        TransactionHibernate transactions = new TransactionHibernate();
+        transactions.setIban(accountWithdraw);
+        transactions.setIban(accountDeposit);
+        transactions.setTransactionDateTime(LocalDateTime.now());
         if (accountFrom.getAccountStatus() == false || accountTo.getAccountStatus() == false) {
             throw new ApplicationException("One of the accounts is locked. Transfer money not possible.");
         } else if (balanceFrom < transferAmount) {
@@ -104,7 +116,9 @@ public class BankAccountService {
         } else {
             Double newBalanceFrom = balanceFrom - transferAmount;
             accountFrom.setBalance(newBalanceFrom);
+            transactions.setWithdraw(transferAmount);
             hibernateBankAccountRepository.save(accountFrom);
+            hibernateTransactionRepository.save(transactions);
             //bankAccountRepository.updateBalance(accountWithdraw, newBalanceFrom);
             Double newBalanceTo = balanceTo + transferAmount;
             accountTo.setBalance(newBalanceTo);
