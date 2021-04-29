@@ -1,6 +1,6 @@
 package ee.bcs.valiit.repository;
 
-import ee.bcs.valiit.solution.controller.SampleAccount2RowMapper;
+
 import ee.bcs.valiit.tdoKlassid.AllAccounts;
 import ee.bcs.valiit.tdoKlassid.BankAccount;
 import org.springframework.beans.factory.annotation.Autowired;

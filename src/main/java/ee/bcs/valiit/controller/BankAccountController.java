@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@RequestMapping("api")
 @RestController
 public class BankAccountController {
 
@@ -34,7 +34,7 @@ public class BankAccountController {
     private static Map<String, BankAccount> accountMap = new HashMap<>();*/
 
     // http://localhost:8080/bankAccount/createAccount
-    @CrossOrigin
+
     @PostMapping("bankAccount/createAccount")
     public void createAccount(@RequestBody BankAccount request) {
         bankAccountService.createAccount(request);
@@ -42,7 +42,7 @@ public class BankAccountController {
     }
 
     // http://localhost:8080/bankAccount/getBalance
-    @CrossOrigin
+
     @GetMapping("bankAccount/getBalance/{iban}")
     public Double getBalance(@PathVariable("iban") String iban) {
         return bankAccountService.getBalance(iban);
@@ -58,7 +58,7 @@ public class BankAccountController {
     }
 
     // http://localhost:8080/bankAccount/depositMoney/
-    @CrossOrigin
+
     @GetMapping("bankAccount/depositMoney/{iban}/{amount}")
     public Double depositMoney(@PathVariable("iban") String iban, @PathVariable("amount") double amount) {
         return bankAccountService.depositMoney(iban, amount);
@@ -76,7 +76,7 @@ public class BankAccountController {
     }
 
     // http://localhost:8080/bankAccount/withdrawMoney/
-    @CrossOrigin
+
     @GetMapping("bankAccount/withdrawMoney/{iban}/{amount}")
     public Double withdrawMoney(@PathVariable("iban") String iban, @PathVariable("amount") double amount) {
         return bankAccountService.withdrawMoney(iban, amount);
@@ -93,7 +93,7 @@ public class BankAccountController {
     }
 
     // http://localhost:8080/bankAccount/transferMoney/
-    @CrossOrigin
+
     @GetMapping("bankAccount/transferMoney/{ibanFrom}/{amount}/{ibanTo}")
     public void transferMoney(@PathVariable("ibanFrom") String accountWithdraw,
                                        @PathVariable("amount") double transferAmount,
@@ -114,20 +114,17 @@ public class BankAccountController {
     }
 
     @GetMapping("bankAccount/accountStatus/{iban}/{lock}")
-    @CrossOrigin
     public boolean accountStatus(@PathVariable("iban") String iban, @PathVariable("lock") boolean lock) {
         return bankAccountService.accountStatus(iban,lock);
         //accountMap.get(iban).setAccountStatus(false);
     }
 
     @GetMapping("bankAccount/deleteAccount/{iban}")
-    @CrossOrigin
     public void deleteAccount(@PathVariable("iban") String iban){
         bankAccountService.deleteAccount(iban);
     }
 
     @GetMapping("bankAccount/getAllAccounts")
-    @CrossOrigin
     public List<AllAccounts> getAllAccounts(){
         return bankAccountService.getAllAccounts();
     }

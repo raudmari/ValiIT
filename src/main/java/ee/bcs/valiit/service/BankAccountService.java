@@ -3,6 +3,8 @@ package ee.bcs.valiit.service;
 import ee.bcs.valiit.exception.ApplicationException;
 import ee.bcs.valiit.hibernate.BankAccountHibernate;
 import ee.bcs.valiit.hibernate.HibernateBankAccountRepository;
+import ee.bcs.valiit.hibernate.HibernateTransactionRepository;
+import ee.bcs.valiit.hibernate.TransactionHibernate;
 import ee.bcs.valiit.repository.BankAccountRepository;
 import ee.bcs.valiit.tdoKlassid.AllAccounts;
 import ee.bcs.valiit.tdoKlassid.BankAccount;
@@ -26,6 +28,9 @@ public class BankAccountService {
     @Autowired
     private HibernateBankAccountRepository hibernateBankAccountRepository;
 
+    @Autowired
+    private HibernateTransactionRepository hibernateTransactionRepository;
+
     public void createAccount(BankAccount request) {
         bankAccountRepository.createAccount(request);
     }
@@ -44,6 +49,8 @@ public class BankAccountService {
 
     public Double depositMoney(String iban, double amount) {
         BankAccountHibernate bankAccount = hibernateBankAccountRepository.getOne(iban);
+        TransactionHibernate transactions = new TransactionHibernate();
+        transactions.setIban(iban);
         //Boolean response = bankAccountRepository.accountStatus(iban);
         if (bankAccount.getAccountStatus() == false) {
             throw new ApplicationException("Account is locked");
@@ -54,7 +61,9 @@ public class BankAccountService {
             //Double balance = bankAccountRepository.getBalance(iban);
             Double newBalance = balance + amount;
             bankAccount.setBalance(newBalance);
+            transactions.setDeposit(amount);
             hibernateBankAccountRepository.save(bankAccount);
+            hibernateTransactionRepository.save(transactions);
             //bankAccountRepository.updateBalance(iban, newBalance);
 
             return newBalance;
@@ -129,4 +138,5 @@ public class BankAccountService {
         }
         return allAccounts;
     }
+
 }
