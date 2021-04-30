@@ -1,8 +1,11 @@
-package ee.bcs.valiit.security;
+package ee.bcs.valiit.controller;
 
-public class LoginRequest {
+import java.time.LocalDateTime;
+
+public class CreateUser {
     private String username;
     private String password;
+    private LocalDateTime loginTime;
 
     public String getUsername() {
         return username;
@@ -18,5 +21,13 @@ public class LoginRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public LocalDateTime getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(LocalDateTime loginTime) {
+        this.loginTime = loginTime;
     }
 }

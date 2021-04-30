@@ -29,5 +29,19 @@
     <changeSet id="2021-04-23 drop id column" author="Marion Raudsepp">
         <dropColumn tableName="bank_account" columnName="id"/>
     </changeSet>
+    <changeSet id="2021-04.49 users" author="Marion Raudsepp">
+        <createTable tableName="users">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="username" type="text"></column>
+            <column name="password" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2021-04-29 col login_time" author="Marion Raudsepp">
+        <addColumn tableName="users">
+            <column name="login_time" type="timestamp"></column>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>
